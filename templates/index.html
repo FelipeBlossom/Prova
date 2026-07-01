@@ -3,26 +3,30 @@
 {% block content %}
 
 <h2>Filmes Disponíveis</h2>
-
 <p>Escolha os filmes que você deseja assistir mais tarde:</p>
 
 <ul>
-
     {% for filme in filmes.values() %}
-
         <li>
             <div>
-                <p>{{ filme.titulo }}</p> ({{ filme.ano }})
+                <p><strong>{{ filme.titulo }}</strong></p> ({{ filme.ano }})
                 <span>Duração: {{ filme.duracao }} minutos</span>
             </div>
-            <form action="{{ url_for('adicionar', filme_id=filme.id) }}" method="post">
-                <button type="submit">Adicionar à watchlist</button>
+            <form action="{{ url_for('filmes') }}" method="post">
+                <input type="hidden" name="filme_id" value="{{ filme.id }}">
+                <button type="submit">
+                    Adicionar à watchlist
+                </button>
             </form>
         </li>
     {% endfor %}
 </ul>
 
-{% if not filmes %}
+<hr>
+
+<h2>Sua Lista de Favoritos</h2>
+
+{% if not filmes_watchlist %}
     <div>
         <p>Sua lista está vazia. Adicione seu primeiro filme favorito!</p>
     </div>
@@ -37,13 +41,13 @@
             </tr>
         </thead>
         <tbody>
-            {% for filme in filmes %}
+            {% for filme in filmes_watchlist %}
                 <tr>
                     <td><strong>{{ filme.titulo }}</strong></td>
                     <td>{{ filme.ano }}</td>
                     <td>{{ filme.duracao }} min</td>
                     <td>
-                        <form action="" method="post">
+                        <form action="{{ url_for('remover', filme_id=filme.id) }}" method="post">
                             <button type="submit">Remover</button>
                         </form>
                     </td>
@@ -53,7 +57,8 @@
     </table>
 
     <div>
-        <p>Tempo total de reprodução:</p> {{ duracao_total }} minutos
+        <p>Tempo total de reprodução: {{ duracao_total }} minutos</p> 
     </div>
 {% endif %}
+
 {% endblock %}
