@@ -31,5 +31,24 @@ def watchlist():
             
     return render_template('index.html', filmes=filmes_watchlist, duracao_total=duracao_total)
 
+#Rota para adicionar filme na watchlist a partir de um forms
+@app.route('/adicionar/<int:filme_id>', methods=['POST'])
+def adicionar(filme_id):
+    # Inicializa a watchlist na sessão se ela não existir
+    if 'watchlist' not in session:
+        session['watchlist'] = []
+    
+    watchlist = session['watchlist']
+
+    if filme_id in watchlist:
+        flash('Este filme já está na sua watchlist!', 'warning')
+    else:
+        if filme_id in app.config['FILMES']:
+            watchlist.append(filme_id)
+            session['watchlist'] = watchlist
+            flash(f'"{app.config["FILMES"][filme_id]["titulo"]}" adicionado com sucesso!', 'success')
+            
+    return redirect(url_for('filmes'))
+
 if __name__ == '__main__':
     app.run(debug=True)
