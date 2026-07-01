@@ -1,6 +1,17 @@
 {% extends "layout.html" %}
 {% block title %}Filmes Disponíveis - Watchlist{% endblock %}
 {% block content %}
+<h2>Cadastrar Novo Filme</h2>
+
+<form action="{{ url_for('filmes') }}" method="post">
+    <input type="text" name="titulo" placeholder="Título" required>
+    <input type="number" name="ano" placeholder="Ano" required>
+    <input type="number" name="duracao" placeholder="Duração (min)" required>
+
+    <button type="submit">Cadastrar Filme</button>
+</form>
+
+<hr>
 
 <h2>Filmes Disponíveis</h2>
 <p>Escolha os filmes que você deseja assistir mais tarde:</p>
@@ -15,7 +26,7 @@
             <form action="{{ url_for('filmes') }}" method="post">
                 <input type="hidden" name="filme_id" value="{{ filme.id }}">
                 <button type="submit">
-                    Adicionar à watchlist
+                    Adicionar Filme
                 </button>
             </form>
         </li>
@@ -24,11 +35,11 @@
 
 <hr>
 
-<h2>Sua Lista de Favoritos</h2>
+<h2>Sua Lista de Filmes</h2>
 
 {% if not filmes_watchlist %}
     <div>
-        <p>Sua lista está vazia. Adicione seu primeiro filme favorito!</p>
+        <p>Sua lista está vazia. Adicione seu primeiro filme</p>
     </div>
 {% else %}
     <table>
