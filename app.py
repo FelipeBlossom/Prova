@@ -50,5 +50,16 @@ def adicionar(filme_id):
             
     return redirect(url_for('filmes'))
 
+@app.route('/remover/<int:filme_id>', methods=['POST'])
+def remover(filme_id):
+    watchlist = session.get('watchlist', [])
+    
+    if filme_id in watchlist:
+        watchlist.remove(filme_id)
+        session['watchlist'] = watchlist
+        titulo = app.config['FILMES'].get(filme_id, {}).get('titulo', 'Filme')
+        flash(f'"{titulo}" removido da sua watchlist.', 'info')
+        
+    return redirect(url_for('watchlist'))
 if __name__ == '__main__':
     app.run(debug=True)
