@@ -49,19 +49,25 @@ def filmes():
 @app.route('/sucesso')
 def certo():
     return render_template('sucesso.html')
-# Rota para watchlist
+
 @app.route('/watchlist')
 def watchlist():
     watchlist_ids = session.get('watchlist', [])
     filmes_watchlist = []
     duracao_total = 0
+
     for filme_id in watchlist_ids:
         if filme_id in app.config['FILMES']:
             filme = app.config['FILMES'][filme_id]
             filmes_watchlist.append(filme)
             duracao_total += filme['duracao']
-            
-    return render_template('index.html', filmes=filmes_watchlist, duracao_total=duracao_total)
+
+    return render_template(
+        'index.html',
+        filmes=app.config['FILMES'],
+        filmes_watchlist=filmes_watchlist,
+        duracao_total=duracao_total
+    )
 
 @app.route('/remover/<int:filme_id>', methods=['POST'])
 def remover(filme_id):
