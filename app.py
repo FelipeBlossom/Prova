@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, session, flash
+from flask import Flask, render_template, redirect, url_for, session, flash, request
 
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_meus_filmes'
@@ -29,8 +29,19 @@ def contar_filmes():
     return len(obter_filmes())
 
 @app.route('/')
+# app.py
+@app.route('/', methods=['GET', 'POST'])
 def filmes():
-    return render_template('index.html', filmes=app.config['FILMES'])
+    if request.method == 'POST':
+        titulo = request.form.get('titulo')
+        if titulo:
+            adicionar_filme(titulo)
+            flash(f'"{titulo}" adicionado com sucesso!', 'success')
+            return redirect(url_for('certo'))
+    meus_filmes = obter_filmes()
+    quantidade = contar_filmes()
+    
+    return render_template('index.html', catalogo=app.config['FILMES'], meus_filmes=meus_filmes, quantidade=quantidade)
 
 @app.route('/sucesso')
 def certo():
@@ -50,25 +61,6 @@ def watchlist():
             duracao_total += filme['duracao']
             
     return render_template('index.html', filmes=filmes_watchlist, duracao_total=duracao_total)
-
-#Rota para adicionar filme na watchlist a partir de um forms
-@app.route('/adicionar/<int:filme_id>', methods=['POST'])
-def adicionar(filme_id):
-    # Inicializa a watchlist na sessão se ela não existir
-    if 'watchlist' not in session:
-        session['watchlist'] = []
-    
-    watchlist = session['watchlist']
-
-    if filme_id in watchlist:
-        flash('Este filme já está na sua watchlist!', 'warning')
-    else:
-        if filme_id in app.config['FILMES']:
-            watchlist.append(filme_id)
-            session['watchlist'] = watchlist
-            flash(f'"{app.config["FILMES"][filme_id]["titulo"]}" adicionado com sucesso!', 'success')
-            
-    return redirect(url_for('filmes'))
 
 @app.route('/remover/<int:filme_id>', methods=['POST'])
 def remover(filme_id):
