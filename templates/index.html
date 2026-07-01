@@ -1,1 +1,24 @@
 {% extends "layout.html" %}
+{% block title %}Filmes Disponíveis - Watchlist{% endblock %}
+{% block content %}
+
+<h2>Filmes Disponíveis</h2>
+
+<p>Escolha os filmes que você deseja assistir mais tarde:</p>
+
+<ul>
+
+    {% for filme in filmes.values() %}
+
+        <li>
+            <div>
+                <p>{{ filme.titulo }}</p> ({{ filme.ano }})
+                <span>Duração: {{ filme.duracao }} minutos</span>
+            </div>
+            <form action="" method="post">
+                <button type="submit">Adicionar à watchlist</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
