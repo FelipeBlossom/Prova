@@ -11,6 +11,23 @@ FILMES = {
 }
 app.config['FILMES'] = FILMES
 
+def obter_filmes():
+    return session.get('filmes', [])
+
+def adicionar_filme(titulo):
+    filmes = obter_filmes()
+    filmes.append(titulo)
+    session['filmes'] = filmes
+
+def remover_filme(indice):
+    filmes = obter_filmes()
+    if 0 <= indice < len(filmes):
+        filmes.pop(indice)
+        session['filmes'] = filmes
+
+def contar_filmes():
+    return len(obter_filmes())
+
 @app.route('/')
 def filmes():
     return render_template('index.html', filmes=app.config['FILMES'])
