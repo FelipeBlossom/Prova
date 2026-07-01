@@ -24,7 +24,7 @@
 
 {% if not filmes %}
     <div>
-        <p>Sua watchlist está vazia. Adicione filme</p>
+        <p>Sua lista está vazia. Adicione seu primeiro filme favorito!</p>
     </div>
 {% else %}
     <table>
@@ -53,7 +53,7 @@
     </table>
 
     <div>
-        <strong>Tempo total de reprodução:</strong> {{ duracao_total }} minutos
+        <p>Tempo total de reprodução:</p> {{ duracao_total }} minutos
     </div>
 {% endif %}
 {% endblock %}
