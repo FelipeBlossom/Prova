@@ -15,6 +15,9 @@ app.config['FILMES'] = FILMES
 def filmes():
     return render_template('index.html', filmes=app.config['FILMES'])
 
+@app.route('/sucesso')
+def certo():
+    return render_template('sucesso.html')
 # Rota para watchlist
 @app.route('/watchlist')
 def watchlist():
