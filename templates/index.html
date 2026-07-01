@@ -15,10 +15,45 @@
                 <p>{{ filme.titulo }}</p> ({{ filme.ano }})
                 <span>Duração: {{ filme.duracao }} minutos</span>
             </div>
-            <form action="" method="post">
+            <form action="{{ url_for('adicionar', filme_id=filme.id) }}" method="post">
                 <button type="submit">Adicionar à watchlist</button>
             </form>
         </li>
     {% endfor %}
 </ul>
+
+{% if not filmes %}
+    <div>
+        <p>Sua watchlist está vazia. Adicione filme</p>
+    </div>
+{% else %}
+    <table>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Ano</th>
+                <th>Duração</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for filme in filmes %}
+                <tr>
+                    <td><strong>{{ filme.titulo }}</strong></td>
+                    <td>{{ filme.ano }}</td>
+                    <td>{{ filme.duracao }} min</td>
+                    <td>
+                        <form action="" method="post">
+                            <button type="submit">Remover</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        <strong>Tempo total de reprodução:</strong> {{ duracao_total }} minutos
+    </div>
+{% endif %}
 {% endblock %}

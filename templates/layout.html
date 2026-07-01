@@ -7,6 +7,21 @@
 </head>
 <body>
     <h1>Meus Filmes Favoritos</h1>
-    {% block content %}{% endblock %}
+        <nav>
+            <a href="{{ url_for('filmes') }}">Filmes</a> | 
+            <a href="{{ url_for('watchlist') }}">Watchlist ({{ session.get('watchlist', []) | length }})</a>
+        </nav>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash-messages">
+                {% for category, message in messages %}
+                    <li class="flash {{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
 </body>
 </html>
